@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot de Robótica Inteligente</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --bot-bg: #ecf0f1;
+            --user-bg: #3498db;
+            --warning: #e74c3c;
+            --success: #2ecc71;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .chat-container {
+            width: 100%;
+            max-width: 900px;
+            height: 85vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .chat-header {
+            background: linear-gradient(to right, var(--primary), #1e3c72);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .chat-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .chat-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .ai-badge {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: var(--success);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f9fa"/><path d="M0 50 Q 25 30, 50 50 T 100 50" stroke="%23e9ecef" stroke-width="0.5" fill="none"/></svg>');
+            background-size: 120px;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.5;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            background-color: var(--bot-bg);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .user-message {
+            background: linear-gradient(to right, var(--secondary), #2c82c9);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-input-container {
+            display: flex;
+            padding: 15px;
+            background-color: #f0f4f8;
+            border-top: 1px solid #e0e4e8;
+            gap: 10px;
+        }
+        
+        #user-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            outline: none;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        #user-input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        #send-button {
+            background: linear-gradient(to right, var(--primary), #1e3c72);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        #send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .disclaimer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            background-color: var(--bot-bg);
+            padding: 12px 18px;
+            border-radius: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .typing-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #7f8c8d;
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        .suggestion-box {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px 15px;
+            background: #f0f4f8;
+            flex-wrap: wrap;
+        }
+        
+        .suggestion {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .suggestion:hover {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .step-highlight {
+            background-color: #fff9c4;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .montagem-title {
+            color: var(--primary);
+            font-weight: bold;
+            margin: 10px 0 5px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        
+        .montagem-list {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+        
+        .montagem-list li {
+            margin-bottom: 6px;
+        }
+        
+        .capabilities {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .capability {
+            background: rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .capability i {
+            color: var(--secondary);
+        }
+        
+        .warning {
+            color: var(--warning);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="ai-badge">
+                <i class="fas fa-robot"></i> IA Especializada
+            </div>
+            <h1>RoboAssistant - Suporte para Montagens</h1>
+            <p>Assistente especializado em 5 montagens de robótica</p>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot-message">
+                <p>Olá! Sou o RoboAssistant, especialista em montagem de kits de robótica.</p>
+                <p>Posso te ajudar com <strong>5 montagens distintas</strong> ou responder perguntas técnicas sobre robótica.</p>
+                
+                <div class="montagem-title">Montagens disponíveis:</div>
+                <ul class="montagem-list">
+                    <li><strong>Robô Explorador</strong> (montagem1)</li>
+                    <li><strong>Braço Robótico</strong> (montagem2)</li>
+                    <li><strong>Carro Autônomo</strong> (montagem3)</li>
+                    <li><strong>Drone Terrestre</strong> (montagem4)</li>
+                    <li><strong>Robô de Combate</strong> (montagem5)</li>
+                </ul>
+                
+                <div class="capabilities">
+                    <div class="capability"><i class="fas fa-check-circle"></i> Explicar passos de montagem</div>
+                    <div class="capability"><i class="fas fa-check-circle"></i> Solucionar problemas</div>
+                    <div class="capability"><i class="fas fa-check-circle"></i> Curiosidades de robótica</div>
+                    <div class="capability"><i class="fas fa-check-circle"></i> Dicas técnicas</div>
+                </div>
+                
+                <p>Como posso ajudar hoje?</p>
+            </div>
+        </div>
+        
+        <div class="typing-indicator" id="typing-indicator">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+        </div>
+        
+        <div class="suggestion-box" id="suggestion-box">
+            <div class="suggestion" data-query="Quais montagens você conhece?">Montagens disponíveis</div>
+            <div class="suggestion" data-query="Explique o Robô Explorador">Robô Explorador</div>
+            <div class="suggestion" data-query="Passo a passo da montagem1">Passo a passo</div>
+            <div class="suggestion" data-query="Dicas para iniciantes">Dicas técnicas</div>
+        </div>
+        
+        <div class="chat-input-container">
+            <input type="text" id="user-input" placeholder="Digite sua pergunta sobre robótica..." autocomplete="off">
+            <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+        </div>
+        
+        <div class="disclaimer">
+            <i class="fas fa-info-circle"></i> Demonstração técnica - Conhecimento limitado às 5 montagens configuradas
+        </div>
+    </div>
+
+    <script>
+        // Base de conhecimento expandida para as montagens
+        const knowledgeBase = {
+            montagens: {
+                "montagem1": {
+                    id: "montagem1",
+                    nome: "Robô Explorador",
+                    keywords: ["explorador", "robo explorador", "exploracao", "montagem1"],
+                    passos: [
+                        "1. Conectar o módulo de controle principal",
+                        "2. Fixar os sensores infravermelhos nas posições indicadas",
+                        "3. Instalar as rodas motorizadas e conectar aos motores",
+                        "4. Conectar a bateria LiPo 9V ao controlador",
+                        "5. Calibrar sensores usando o software RoboCalib"
+                    ],
+                    dificuldade: "Iniciante",
+                    duracao: "2 horas",
+                    materiais: [
+                        "Módulo de controle Arduino",
+                        "2 motores DC com caixa de redução",
+                        "Chassi em acrílico",
+                        "Sensores infravermelhos (2 unidades)",
+                        "Bateria LiPo 9V"
+                    ],
+                    dicas: [
+                        "Calibre os sensores em uma superfície branca antes da montagem",
+                        "Teste cada motor separadamente antes de instalar",
+                        "Use cola quente para fixar componentes delicados"
+                    ]
+                },
+                "montagem2": {
+                    id: "montagem2",
+                    nome: "Braço Robótico",
+                    keywords: ["braco robotico", "braco", "robotico", "montagem2"],
+                    passos: [
+                        "1. Montar a base giratória com o motor de passo",
+                        "2. Instalar as juntas servo-motores nas posições corretas",
+                        "3. Fixar a garra pneumática no segmento final",
+                        "4. Conectar o controlador Arduino e módulo de potência",
+                        "5. Programar sequências básicas de movimento"
+                    ],
+                    dificuldade: "Intermediário",
+                    duracao: "4 horas",
+                    materiais: [
+                        "Servo motores (4 unidades)",
+                        "Estrutura em acrílico cortada a laser",
+                        "Controlador Arduino Mega",
+                        "Kit de garra pneumática",
+                        "Fonte de alimentação 12V"
+                    ],
+                    dicas: [
+                        "Verifique o alcance de movimento de cada junta antes de fixar",
+                        "Use lubrificante a base de silicone nas juntas",
+                        "Calibre os ângulos limites no software antes de operar"
+                    ]
+                },
+                "montagem3": {
+                    id: "montagem3",
+                    nome: "Carro Autônomo",
+                    keywords: ["carro autonomo", "carro", "autonomo", "montagem3"],
+                    passos: [
+                        "1. Montar a estrutura do chassi",
+                        "2. Instalar o sistema de direção servo-controlado",
+                        "3. Posicionar sensores ultrassônicos frontal e laterais",
+                        "4. Conectar módulo Bluetooth para comunicação",
+                        "5. Carregar programa de navegação autônoma"
+                    ],
+                    dificuldade: "Avançado",
+                    duracao: "6 horas",
+                    materiais: [
+                        "Kit chassi completo",
+                        "Módulo sensor ultrassônico HC-SR04 (3 unidades)",
+                        "Arduino com shield motor",
+                        "Módulo Bluetooth HC-05",
+                        "Bateria LiPo 11.1V"
+                    ]
+                },
+                "montagem4": {
+                    id: "montagem4",
+                    nome: "Drone Terrestre",
+                    keywords: ["drone terrestre", "drone", "terrestre", "montagem4"],
+                    passos: [
+                        "1. Montar a estrutura com 4 rodas omnidirecionais",
+                        "2. Instalar as câmeras FPV frontal e traseira",
+                        "3. Conectar módulo de controle remoto",
+                        "4. Configurar sistema de transmissão de vídeo",
+                        "5. Testar controles e sistema FPV"
+                    ],
+                    dificuldade: "Intermediário",
+                    duracao: "5 horas"
+                },
+                "montagem5": {
+                    id: "montagem5",
+                    nome: "Robô de Combate",
+                    keywords: ["robo de combate", "combate", "robo luta", "montagem5"],
+                    passos: [
+                        "1. Soldar estrutura reforçada de metal",
+                        "2. Instalar sistema de armas controlado por servo",
+                        "3. Montar proteções laterais articuladas",
+                        "4. Configurar controle remoto de longo alcance",
+                        "5. Testar resistência e sistemas de segurança"
+                    ],
+                    dificuldade: "Avançado",
+                    duracao: "8 horas"
+                }
+            },
+            
+            curiosidades: [
+                "O primeiro robô industrial foi instalado na General Motors em 1961",
+                "Robôs aspiradores usam algoritmos SLAM para mapear ambientes",
+                "O termo 'robô' vem da palavra tcheca 'robota', que significa trabalho forçado",
+                "Robôs cirúrgicos podem realizar procedimentos com precisão de 0.1mm",
+                "O robô mais rápido do mundo pode correr a 46 km/h"
+            ],
+            
+            suporte: [
+                "Verifique todas as conexões de energia e dados",
+                "Recarregue a bateria completamente antes de testar",
+                "Reinicie o controlador principal para resolver erros de software",
+                "Verifique se há atualizações de firmware disponíveis",
+                "Calibre os sensores novamente seguindo o manual",
+                "Teste componentes individualmente para identificar falhas"
+            ],
+            
+            dicas: [
+                "Sempre use luvas ao manipular componentes eletrônicos",
+                "Organize as peças antes de começar a montagem",
+                "Documente cada etapa com fotos para referência futura",
+                "Teste cada subsistema antes do montagem completa",
+                "Mantenha uma estação de trabalho bem iluminada e organizada"
+            ]
+        };
+
+        // Elementos DOM
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const suggestionBox = document.getElementById('suggestion-box');
+
+        // Função para adicionar mensagem no chat
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+            
+            // Formatar passos com destaque
+            const formattedText = text.replace(/(Passo \d+:|passo \d+)/gi, '<span class="step-highlight">$1</span>');
+            messageDiv.innerHTML = formattedText;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Simular processamento da IA
+        function processUserInput(input) {
+            typingIndicator.style.display = 'flex';
+            
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+                const response = generateResponse(input);
+                addMessage(response);
+            }, 800);
+        }
+
+        // Sistema de correspondência de padrões flexível
+        function findMatchingMontagem(input) {
+            const lowerInput = input.toLowerCase();
+            
+            // Verificar correspondência direta por ID
+            for (const [id, montagem] of Object.entries(knowledgeBase.montagens)) {
+                if (lowerInput.includes(id)) return montagem;
+            }
+            
+            // Verificar por nome e keywords
+            for (const montagem of Object.values(knowledgeBase.montagens)) {
+                if (lowerInput.includes(montagem.nome.toLowerCase())) return montagem;
+                
+                // Verificar keywords
+                for (const keyword of montagem.keywords) {
+                    if (lowerInput.includes(keyword)) return montagem;
+                }
+            }
+            
+            return null;
+        }
+
+        // Gerar resposta inteligente
+        function generateResponse(input) {
+            const lowerInput = input.toLowerCase().trim();
+            
+            // 1. Saudação
+            if (/olá|oi|bom dia|boa tarde|boa noite|hello|hi/.test(lowerInput)) {
+                return "Olá! Como posso te ajudar com suas montagens de robótica hoje?";
+            }
+            
+            // 2. Listar montagens
+            if (/(quais|quais são|listar|mostrar|montagens|atividades)/.test(lowerInput) && 
+                /(montagem|atividade|rob[oô]|kit)/.test(lowerInput)) {
+                
+                let response = "Temos 5 montagens disponíveis:<br><br>";
+                for (const [id, montagem] of Object.entries(knowledgeBase.montagens)) {
+                    response += `<strong>${montagem.nome}</strong> (${id})<br>`;
+                    response += `Dificuldade: ${montagem.dificuldade}, Duração: ${montagem.duracao}<br><br>`;
+                }
+                response += "Sobre qual você gostaria de saber mais?";
+                return response;
+            }
+            
+            // 3. Perguntas sobre montagens específicas
+            const montagem = findMatchingMontagem(lowerInput);
+            if (montagem) {
+                // Perguntou por passo específico?
+                const passoMatch = lowerInput.match(/(passo|etapa)\s*(\d+)/);
+                if (passoMatch) {
+                    const passoNum = parseInt(passoMatch[2]);
+                    if (passoNum > 0 && passoNum <= montagem.passos.length) {
+                        return `<strong>Passo ${passoNum} da ${montagem.nome}:</strong><br>${montagem.passos[passoNum-1]}`;
+                    }
+                }
+                
+                // Perguntou sobre materiais?
+                if (/(materiais|componentes|peças|itens)/.test(lowerInput)) {
+                    if (montagem.materiais) {
+                        return `<strong>Materiais para ${montagem.nome}:</strong><br>${montagem.materiais.join('<br>')}`;
+                    } else {
+                        return `Para a lista de materiais da ${montagem.nome}, consulte o manual do kit.`;
+                    }
+                }
+                
+                // Perguntou sobre dicas?
+                if (/(dica|dicas|sugest[ãa]o|recomenda[çc][ãa]o)/.test(lowerInput)) {
+                    if (montagem.dicas) {
+                        return `<strong>Dicas para ${montagem.nome}:</strong><br>${montagem.dicas.join('<br>')}`;
+                    } else {
+                        return `Dicas gerais para montagem: ${knowledgeBase.dicas.slice(0, 3).join('<br>')}`;
+                    }
+                }
+                
+                // Resposta padrão sobre a montagem
+                let response = `<strong>${montagem.nome}</strong> (Dificuldade: ${montagem.dificuldade}, Duração: ${montagem.duracao}):<br>`;
+                response += "<strong>Passos:</strong><br>" + montagem.passos.join('<br>');
+                
+                if (montagem.dicas) {
+                    response += "<br><br><strong>Dicas importantes:</strong><br>";
+                    response += montagem.dicas.slice(0, 3).join('<br>');
+                }
+                
+                return response;
+            }
+            
+            // 4. Perguntar por passos
+            if (/(passo|etapa)\s*(\d+)/.test(lowerInput)) {
+                return "Por favor, especifique de qual montagem você está falando. Ex: 'Passo 2 do Robô Explorador'";
+            }
+            
+            // 5. Problemas técnicos
+            if (/(problema|erro|ajuda|não funciona|não liga|dificuldade|dúvida)/.test(lowerInput)) {
+                return "<strong>Soluções para problemas técnicos:</strong><br>" + 
+                       knowledgeBase.suporte.slice(0, 4).join('<br>');
+            }
+            
+            // 6. Curiosidades
+            if (/(curiosidade|interessante|sabia|história|fato)/.test(lowerInput)) {
+                const randomCurio = knowledgeBase.curiosidades[
+                    Math.floor(Math.random() * knowledgeBase.curiosidades.length)
+                ];
+                return "<strong>Curiosidade robótica:</strong> " + randomCurio;
+            }
+            
+            // 7. Dicas gerais
+            if (/(dica|dicas|sugest[ãa]o|recomenda[çc][ãa]o|conselho)/.test(lowerInput)) {
+                return "<strong>Dicas gerais de montagem:</strong><br>" + 
+                       knowledgeBase.dicas.join('<br>');
+            }
+            
+            // 8. Agradecimento
+            if (/(obrigado|agradeço|valeu|grato|obrigada)/.test(lowerInput)) {
+                return "De nada! Estou à disposição para mais informações sobre suas montagens de robótica.";
+            }
+            
+            // 9. Limites do sistema
+            if (/(o que você sabe|o que faz|capacidades|limites)/.test(lowerInput)) {
+                return "<strong>Meus conhecimentos:</strong><br>" +
+                       "- 5 montagens de robótica específicas<br>" +
+                       "- Passo a passo detalhado de cada montagem<br>" +
+                       "- Solução de problemas técnicos<br>" +
+                       "- Curiosidades sobre robótica<br>" +
+                       "- Dicas de montagem<br><br>" +
+                       "<span class='warning'>Não sei responder sobre outros assuntos além de robótica e montagens</span>";
+            }
+            
+            // Resposta padrão para fora do escopo
+            return "Desculpe, minha especialidade é montagem de kits de robótica. " + 
+                   "Posso te ajudar com:<br>" +
+                   "- Explicar passo a passo de 5 montagens específicas<br>" +
+                   "- Solucionar problemas técnicos<br>" +
+                   "- Responder curiosidades sobre robótica<br>" +
+                   "- Dar dicas de montagem<br><br>" +
+                   "Tente perguntar sobre 'Robô Explorador' ou 'montagem1' para começar.";
+        }
+
+        // Event Listeners
+        sendButton.addEventListener('click', () => {
+            const message = userInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                userInput.value = '';
+                processUserInput(message);
+            }
+        });
+
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+
+        // Sugestões de perguntas
+        suggestionBox.addEventListener('click', (e) => {
+            if (e.target.classList.contains('suggestion')) {
+                const query = e.target.getAttribute('data-query');
+                userInput.value = query;
+                sendButton.click();
+            }
+        });
+
+        // Mensagem inicial
+        window.addEventListener('DOMContentLoaded', () => {
+            userInput.focus();
+        });
+    </script>
+</body>
+</html>
