@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CleanConnect - Plataforma de Serviços Profissionais</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* Estilos completos do CSS anterior */
         :root {
             --primary: #2a9d8f;
             --primary-dark: #1d7a6f;
@@ -742,11 +742,6 @@
             color: var(--gray);
         }
         
-        .chart-container {
-            height: 300px;
-            margin-bottom: 2rem;
-        }
-        
         .user-list, .service-list {
             max-height: 400px;
             overflow-y: auto;
@@ -1327,10 +1322,6 @@
                             <p>Avaliação Média</p>
                         </div>
                     </div>
-                    
-                    <div class="chart-container">
-                        <canvas id="servicesChart"></canvas>
-                    </div>
                 </div>
                 
                 <div class="admin-content" id="usersContent">
@@ -1361,35 +1352,31 @@
     </div>
 
     <script>
-        // Dados da aplicação
-        const services = [
-            { id: 1, name: "Limpeza Residencial", icon: "broom", price: 120, description: "Limpeza completa da sua casa com produtos de qualidade e profissionais treinados." },
-            { id: 2, name: "Limpeza Comercial", icon: "building", price: 250, description: "Serviços especializados para escritórios, lojas e estabelecimentos comerciais." },
-            { id: 3, name: "Pequenos Reparos", icon: "tools", price: 80, description: "Consertos elétricos, hidráulicos, montagem de móveis e outros reparos domésticos." },
-            { id: 4, name: "Limpeza Automotiva", icon: "car", price: 70, description: "Limpeza interna e externa do seu veículo com produtos profissionais." },
-            { id: 5, name: "Jardineiro", icon: "leaf", price: 90, description: "Manutenção de jardins, poda de árvores e plantas, paisagismo." },
-            { id: 6, name: "Encanador", icon: "faucet", price: 100, description: "Reparos hidráulicos, desentupimentos, instalações." }
-        ];
-
-        // Avaliações de serviços
-        const reviews = [
-            { id: 1, serviceId: 1, userId: 1, userName: "Maria Silva", rating: 5, comment: "Excelente serviço! Profissional muito atencioso e caprichoso.", date: "2023-08-01" },
-            { id: 2, serviceId: 3, userId: 2, userName: "João Pereira", rating: 4, comment: "Resolveu meu problema rapidamente. Só demorou um pouco para chegar.", date: "2023-08-03" },
-            { id: 3, serviceId: 5, userId: 3, userName: "Ana Costa", rating: 5, comment: "Jardim ficou maravilhoso! Recomendo muito.", date: "2023-08-05" },
-            { id: 4, serviceId: 2, userId: 4, userName: "Carlos Mendes", rating: 5, comment: "Escritório ficou impecável. Equipe muito profissional.", date: "2023-08-06" }
-        ];
-
-        // Usuários
-        const users = [
-            { id: 1, name: "Cliente Teste", email: "cliente@teste.com", type: "client" },
-            { id: 2, name: "Profissional Teste", email: "profissional@teste.com", type: "professional", pixKey: "profissional@chavepix.com", category: "limpeza" },
-            { id: 3, name: "Admin", email: "admin@teste.com", type: "admin" }
-        ];
-
-        // Serviços contratados
-        let hiredServices = [
-            { id: 1, serviceId: 1, clientId: 1, professionalId: 2, date: "2023-08-10", address: "Rua Exemplo, 123", status: "completed", paymentStatus: "paid" }
-        ];
+        // Banco de dados simulado (será substituído por um backend real no Railway)
+        const database = {
+            services: [
+                { id: 1, name: "Limpeza Residencial", icon: "broom", price: 120, description: "Limpeza completa da sua casa com produtos de qualidade e profissionais treinados." },
+                { id: 2, name: "Limpeza Comercial", icon: "building", price: 250, description: "Serviços especializados para escritórios, lojas e estabelecimentos comerciais." },
+                { id: 3, name: "Pequenos Reparos", icon: "tools", price: 80, description: "Consertos elétricos, hidráulicos, montagem de móveis e outros reparos domésticos." },
+                { id: 4, name: "Limpeza Automotiva", icon: "car", price: 70, description: "Limpeza interna e externa do seu veículo com produtos profissionais." },
+                { id: 5, name: "Jardineiro", icon: "leaf", price: 90, description: "Manutenção de jardins, poda de árvores e plantas, paisagismo." },
+                { id: 6, name: "Encanador", icon: "faucet", price: 100, description: "Reparos hidráulicos, desentupimentos, instalações." }
+            ],
+            reviews: [
+                { id: 1, serviceId: 1, userId: 1, userName: "Maria Silva", rating: 5, comment: "Excelente serviço! Profissional muito atencioso e caprichoso.", date: "2023-08-01" },
+                { id: 2, serviceId: 3, userId: 2, userName: "João Pereira", rating: 4, comment: "Resolveu meu problema rapidamente. Só demorou um pouco para chegar.", date: "2023-08-03" },
+                { id: 3, serviceId: 5, userId: 3, userName: "Ana Costa", rating: 5, comment: "Jardim ficou maravilhoso! Recomendo muito.", date: "2023-08-05" },
+                { id: 4, serviceId: 2, userId: 4, userName: "Carlos Mendes", rating: 5, comment: "Escritório ficou impecável. Equipe muito profissional.", date: "2023-08-06" }
+            ],
+            users: [
+                { id: 1, name: "Cliente Teste", email: "cliente@teste.com", password: "123456", type: "client" },
+                { id: 2, name: "Profissional Teste", email: "profissional@teste.com", password: "123456", type: "professional", pixKey: "profissional@chavepix.com", category: "limpeza" },
+                { id: 3, name: "Admin", email: "admin@teste.com", password: "admin123", type: "admin" }
+            ],
+            hiredServices: [
+                { id: 1, serviceId: 1, clientId: 1, professionalId: 2, date: "2023-08-10", address: "Rua Exemplo, 123", status: "completed", paymentStatus: "paid" }
+            ]
+        };
 
         // Estado da aplicação
         let currentUser = null;
@@ -1422,7 +1409,7 @@
         // Funções
         function renderServices() {
             servicesGrid.innerHTML = '';
-            services.forEach(service => {
+            database.services.forEach(service => {
                 const serviceCard = document.createElement('div');
                 serviceCard.className = 'service-card';
                 serviceCard.innerHTML = `
@@ -1446,7 +1433,7 @@
             document.querySelectorAll('.hire-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const serviceId = parseInt(e.target.dataset.id);
-                    selectedService = services.find(s => s.id === serviceId);
+                    selectedService = database.services.find(s => s.id === serviceId);
                     
                     if (!currentUser) {
                         alert('Por favor, faça login para contratar um serviço.');
@@ -1463,8 +1450,8 @@
         function renderReviews() {
             reviewsContainer.innerHTML = '';
             
-            reviews.forEach(review => {
-                const service = services.find(s => s.id === review.serviceId);
+            database.reviews.forEach(review => {
+                const service = database.services.find(s => s.id === review.serviceId);
                 if (!service) return;
                 
                 const reviewElement = document.createElement('div');
@@ -1472,7 +1459,7 @@
                 
                 let stars = '';
                 for (let i = 1; i <= 5; i++) {
-                    stars += `<i class="fas fa-star${i > review.rating ? '-half-alt' : ''}"></i>`;
+                    stars += `<i class="fas ${i <= review.rating ? 'fa-star' : 'fa-star-half-alt'}"></i>`;
                 }
                 
                 reviewElement.innerHTML = `
@@ -1520,19 +1507,18 @@
                 return;
             }
             
-            // Simulação de login
-            const user = users.find(u => u.email === email);
+            // Simulação de login com o banco de dados simulado
+            const user = database.users.find(u => u.email === email && u.password === password);
             
             if (user) {
                 currentUser = user;
-                
-                if (user.type === 'admin') {
-                    showAdminPanel();
-                }
-                
                 alert(`Bem-vindo de volta, ${currentUser.name}!`);
                 hideModals();
                 updateUIForLoggedInUser();
+                
+                if (user.type === 'admin') {
+                    updateAdminDashboard();
+                }
             } else {
                 alert('Credenciais inválidas.');
             }
@@ -1567,17 +1553,24 @@
                 return;
             }
             
+            // Verificar se o e-mail já está cadastrado
+            if (database.users.some(u => u.email === email)) {
+                alert('Este e-mail já está cadastrado.');
+                return;
+            }
+            
             // Simulação de registro
             const newUser = {
-                id: users.length + 1,
+                id: database.users.length + 1,
                 name,
                 email,
+                password,
                 type: userType,
                 pixKey,
                 category
             };
             
-            users.push(newUser);
+            database.users.push(newUser);
             currentUser = newUser;
             
             alert(`Conta criada com sucesso! Bem-vindo(a) ao CleanConnect, ${name}!`);
@@ -1600,7 +1593,7 @@
             
             // Simulação de contratação
             const newHiredService = {
-                id: hiredServices.length + 1,
+                id: database.hiredServices.length + 1,
                 serviceId: selectedService.id,
                 clientId: currentUser.id,
                 date,
@@ -1611,7 +1604,7 @@
                 paymentMethod
             };
             
-            hiredServices.push(newHiredService);
+            database.hiredServices.push(newHiredService);
             
             alert(`Serviço de ${selectedService.name} contratado para ${date} no endereço ${address}. Um profissional será contatado em breve.`);
             
@@ -1634,7 +1627,7 @@
             
             // Simulação de envio de avaliação
             const newReview = {
-                id: reviews.length + 1,
+                id: database.reviews.length + 1,
                 serviceId: currentReviewService.serviceId,
                 userId: currentUser.id,
                 userName: currentUser.name,
@@ -1643,15 +1636,15 @@
                 date: new Date().toISOString().split('T')[0]
             };
             
-            reviews.push(newReview);
+            database.reviews.push(newReview);
             
             // Atualizar status do serviço
-            const serviceIndex = hiredServices.findIndex(s => s.id === currentReviewService.id);
+            const serviceIndex = database.hiredServices.findIndex(s => s.id === currentReviewService.id);
             if (serviceIndex !== -1) {
-                hiredServices[serviceIndex].status = 'completed';
+                database.hiredServices[serviceIndex].status = 'completed';
                 
                 // Calcular pagamento ao profissional
-                const servicePrice = services.find(s => s.id === hiredServices[serviceIndex].serviceId).price;
+                const servicePrice = database.services.find(s => s.id === database.hiredServices[serviceIndex].serviceId).price;
                 const platformFee = servicePrice * 0.10;
                 const adminFee = (servicePrice - platformFee) * 0.05;
                 const professionalPayment = servicePrice - platformFee - adminFee;
@@ -1663,95 +1656,35 @@
             renderReviews();
         }
 
-        function showAdminPanel() {
+        function updateAdminDashboard() {
             // Atualizar estatísticas
-            document.getElementById('totalUsers').textContent = users.length;
-            document.getElementById('totalServices').textContent = hiredServices.length;
+            document.getElementById('totalUsers').textContent = database.users.length;
+            document.getElementById('totalServices').textContent = database.hiredServices.length;
             
             // Calcular receita total
-            const totalRevenue = hiredServices.reduce((sum, service) => {
-                const servicePrice = services.find(s => s.id === service.serviceId).price;
+            const totalRevenue = database.hiredServices.reduce((sum, service) => {
+                const servicePrice = database.services.find(s => s.id === service.serviceId).price;
                 return sum + (servicePrice * 0.145); // 14.5% de taxa total
             }, 0);
             
             document.getElementById('totalRevenue').textContent = `R$ ${totalRevenue.toFixed(2)}`;
             
             // Calcular avaliação média
-            const avgRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+            const avgRating = database.reviews.reduce((sum, review) => sum + review.rating, 0) / database.reviews.length;
             document.getElementById('avgRating').textContent = avgRating.toFixed(1);
-            
-            // Renderizar gráfico
-            renderServicesChart();
             
             // Renderizar lista de usuários
             renderUserList();
             
             // Renderizar lista de serviços
             renderServiceList();
-            
-            // Mostrar modal de admin
-            showModal(adminModal);
-        }
-
-        function renderServicesChart() {
-            const ctx = document.getElementById('servicesChart').getContext('2d');
-            
-            // Contar serviços por categoria
-            const serviceCounts = {};
-            hiredServices.forEach(service => {
-                const serviceData = services.find(s => s.id === service.serviceId);
-                if (serviceData) {
-                    serviceCounts[serviceData.name] = (serviceCounts[serviceData.name] || 0) + 1;
-                }
-            });
-            
-            const labels = Object.keys(serviceCounts);
-            const data = Object.values(serviceCounts);
-            
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Serviços Contratados',
-                        data: data,
-                        backgroundColor: [
-                            'rgba(42, 157, 143, 0.7)',
-                            'rgba(233, 196, 106, 0.7)',
-                            'rgba(231, 111, 81, 0.7)',
-                            'rgba(38, 70, 83, 0.7)',
-                            'rgba(155, 193, 188, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgb(42, 157, 143)',
-                            'rgb(233, 196, 106)',
-                            'rgb(231, 111, 81)',
-                            'rgb(38, 70, 83)',
-                            'rgb(155, 193, 188)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
-                    }
-                }
-            });
         }
 
         function renderUserList() {
             const userList = document.getElementById('userList');
             userList.innerHTML = '';
             
-            users.forEach(user => {
+            database.users.forEach(user => {
                 const userItem = document.createElement('div');
                 userItem.className = 'user-item';
                 userItem.innerHTML = `
@@ -1772,10 +1705,10 @@
             const serviceList = document.getElementById('serviceList');
             serviceList.innerHTML = '';
             
-            hiredServices.forEach(service => {
-                const serviceData = services.find(s => s.id === service.serviceId);
-                const client = users.find(u => u.id === service.clientId);
-                const professional = service.professionalId ? users.find(u => u.id === service.professionalId) : null;
+            database.hiredServices.forEach(service => {
+                const serviceData = database.services.find(s => s.id === service.serviceId);
+                const client = database.users.find(u => u.id === service.clientId);
+                const professional = service.professionalId ? database.users.find(u => u.id === service.professionalId) : null;
                 
                 if (!serviceData) return;
                 
@@ -1801,13 +1734,19 @@
                 loginBtn.innerHTML = `<i class="fas fa-user"></i> ${currentUser.name.split(' ')[0]}`;
                 registerBtn.style.display = 'none';
                 
-                if (currentUser.type === 'professional') {
-                    const servicesLink = document.createElement('a');
-                    servicesLink.href = '#';
-                    servicesLink.innerHTML = '<i class="fas fa-tasks"></i> Serviços';
-                    servicesLink.style.marginRight = '15px';
-                    servicesLink.style.color = 'white';
-                    document.querySelector('.user-actions').insertBefore(servicesLink, loginBtn);
+                // Adicionar botão de admin se necessário
+                if (currentUser.type === 'admin') {
+                    const adminBtn = document.createElement('button');
+                    adminBtn.className = 'btn btn-outline';
+                    adminBtn.id = 'adminBtn';
+                    adminBtn.innerHTML = '<i class="fas fa-cog"></i> Admin';
+                    adminBtn.style.marginLeft = '15px';
+                    adminBtn.addEventListener('click', () => {
+                        showModal(adminModal);
+                        updateAdminDashboard();
+                    });
+                    
+                    document.querySelector('.user-actions').appendChild(adminBtn);
                 }
             }
         }
@@ -1819,7 +1758,7 @@
                 return;
             }
             
-            const filteredServices = services.filter(service => 
+            const filteredServices = database.services.filter(service => 
                 service.name.toLowerCase().includes(searchTerm) || 
                 service.description.toLowerCase().includes(searchTerm)
             );
@@ -1855,7 +1794,7 @@
             document.querySelectorAll('.hire-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const serviceId = parseInt(e.target.dataset.id);
-                    selectedService = services.find(s => s.id === serviceId);
+                    selectedService = database.services.find(s => s.id === serviceId);
                     
                     if (!currentUser) {
                         alert('Por favor, faça login para contratar um serviço.');
@@ -1952,25 +1891,6 @@
         // Inicialização
         renderServices();
         renderReviews();
-        
-        // Simular login de admin para demonstração
-        setTimeout(() => {
-            const adminUser = users.find(u => u.type === 'admin');
-            if (adminUser) {
-                document.querySelector('.user-actions').innerHTML += `
-                    <button class="btn btn-outline" id="adminBtn" style="margin-left: 15px;">
-                        <i class="fas fa-cog"></i> Admin
-                    </button>
-                `;
-                document.getElementById('adminBtn').addEventListener('click', () => {
-                    if (currentUser && currentUser.type === 'admin') {
-                        showAdminPanel();
-                    } else {
-                        alert('Apenas administradores podem acessar esta área.');
-                    }
-                });
-            }
-        }, 1000);
     </script>
 </body>
 </html>
