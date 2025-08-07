@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CleanConnect - Plataforma de Serviços</title>
+    <title>CleanConnect - Plataforma de Serviços Profissionais</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary: #2a9d8f;
@@ -290,14 +291,14 @@
             margin: 0 auto 1.5rem;
         }
         
-        /* Points System */
-        .points-system {
+        /* Payment System */
+        .payment-system {
             background: linear-gradient(135deg, var(--dark), #1a3c46);
             color: white;
             text-align: center;
         }
         
-        .points-container {
+        .payment-container {
             display: flex;
             justify-content: space-between;
             gap: 2rem;
@@ -305,7 +306,7 @@
             margin-top: 3rem;
         }
         
-        .points-card {
+        .payment-card {
             flex: 1;
             min-width: 300px;
             background: rgba(255,255,255,0.1);
@@ -315,45 +316,19 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
         
-        .points-card i {
+        .payment-card i {
             font-size: 3rem;
             margin-bottom: 1.5rem;
             color: var(--secondary);
         }
         
-        .points-card h3 {
+        .payment-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
         }
         
-        .points-card p {
+        .payment-card p {
             opacity: 0.8;
-        }
-        
-        .badges {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .badge {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .badge i {
-            font-size: 2rem;
-            margin-bottom: 5px;
         }
         
         /* Testimonials */
@@ -408,6 +383,74 @@
             justify-content: center;
             color: white;
             font-weight: bold;
+        }
+        
+        .rating {
+            display: flex;
+            margin: 10px 0;
+        }
+        
+        .rating i {
+            color: #e9c46a;
+            margin-right: 3px;
+        }
+        
+        /* Reviews */
+        .reviews-section {
+            background: var(--light);
+        }
+        
+        .review {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .review-user {
+            display: flex;
+            align-items: center;
+        }
+        
+        .review-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .review-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .review-actions button {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .review-actions button:hover {
+            color: var(--primary);
         }
         
         /* CTA */
@@ -551,6 +594,8 @@
             max-width: 500px;
             overflow: hidden;
             animation: modalOpen 0.4s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         @keyframes modalOpen {
@@ -594,7 +639,7 @@
             font-weight: 500;
         }
         
-        .form-group input, .form-group select {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 0.8rem 1rem;
             border: 1px solid #ddd;
@@ -635,6 +680,138 @@
             font-size: 2rem;
             margin-bottom: 0.5rem;
             color: var(--primary);
+        }
+        
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-top: 2rem;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .admin-tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .admin-content {
+            display: none;
+        }
+        
+        .admin-content.active {
+            display: block;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .stat-card p {
+            color: var(--gray);
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-bottom: 2rem;
+        }
+        
+        .user-list, .service-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-item, .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .user-item:last-child, .service-item:last-child {
+            border-bottom: none;
+        }
+        
+        .user-actions, .service-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .action-btn:hover {
+            color: var(--primary);
+        }
+        
+        /* Authorization */
+        .authorization-box {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid #ddd;
+        }
+        
+        .authorization-box h4 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .authorization-text {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 1rem;
         }
         
         /* Responsividade */
@@ -697,7 +874,7 @@
                 <ul>
                     <li><a href="#servicos">Serviços</a></li>
                     <li><a href="#como-funciona">Como Funciona</a></li>
-                    <li><a href="#pontos">Sistema de Pontos</a></li>
+                    <li><a href="#pagamento">Pagamentos</a></li>
                     <li><a href="#depoimentos">Depoimentos</a></li>
                 </ul>
             </nav>
@@ -722,7 +899,7 @@
             <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
                 <span><i class="fas fa-check-circle"></i> Profissionais verificados</span>
                 <span><i class="fas fa-shield-alt"></i> Pagamento seguro</span>
-                <span><i class="fas fa-medal"></i> Sistema de pontos</span>
+                <span><i class="fas fa-hand-holding-usd"></i> Sistema de comissões</span>
             </div>
         </div>
     </section>
@@ -773,48 +950,33 @@
         </div>
     </section>
 
-    <!-- Sistema de Pontos -->
-    <section class="section points-system" id="pontos">
+    <!-- Sistema de Pagamento -->
+    <section class="section payment-system" id="pagamento">
         <div class="section-title">
-            <h2>Sistema de Pontos CleanConnect</h2>
-            <p>Ganhe recompensas ao usar nossa plataforma</p>
+            <h2>Sistema de Pagamento Seguro</h2>
+            <p>Transações transparentes e seguras para todos</p>
         </div>
         
-        <div class="points-container">
-            <div class="points-card">
-                <i class="fas fa-coins"></i>
+        <div class="payment-container">
+            <div class="payment-card">
+                <i class="fas fa-money-bill-wave"></i>
                 <h3>Para Clientes</h3>
-                <p>Ganhe pontos ao contratar serviços, avaliar profissionais, indicar amigos e completar seu perfil. Troque pontos por descontos em próximos serviços.</p>
+                <p>Você paga diretamente para a plataforma através de PIX, cartão ou boleto. O pagamento é liberado para o profissional após a conclusão e aprovação do serviço.</p>
             </div>
             
-            <div class="points-card">
-                <i class="fas fa-award"></i>
+            <div class="payment-card">
+                <i class="fas fa-hand-holding-usd"></i>
                 <h3>Para Profissionais</h3>
-                <p>Acumule pontos ao concluir serviços, receber boas avaliações, responder rápido e manter alta taxa de aceitação. Troque por destaque no app e redução de taxas.</p>
+                <p>A plataforma retém 10% do valor total como taxa de serviço. Do valor restante, 5% é retido como taxa administrativa. Você recebe 85.5% do valor total diretamente via PIX.</p>
             </div>
         </div>
         
-        <div class="badges">
-            <div class="badge">
-                <i class="fas fa-seedling"></i>
-                <span>Iniciante</span>
-            </div>
-            <div class="badge">
-                <i class="fas fa-star"></i>
-                <span>Bronze</span>
-            </div>
-            <div class="badge">
-                <i class="fas fa-star-half-alt"></i>
-                <span>Prata</span>
-            </div>
-            <div class="badge">
-                <i class="fas fa-star"></i>
-                <span>Ouro</span>
-            </div>
-            <div class="badge">
-                <i class="fas fa-crown"></i>
-                <span>Diamante</span>
-            </div>
+        <div style="margin-top: 2rem; background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 15px;">
+            <h3>Exemplo de cálculo:</h3>
+            <p>Serviço de R$ 200,00</p>
+            <p>Taxa plataforma (10%): R$ 20,00</p>
+            <p>Taxa administrativa (5% sobre R$ 180,00): R$ 9,00</p>
+            <p>Total recebido pelo profissional: R$ 171,00</p>
         </div>
     </section>
 
@@ -829,6 +991,13 @@
             <div class="testimonial">
                 <div class="testimonial-content">
                     <p>"Contratei uma faxina pelo CleanConnect e fiquei impressionada com a qualidade do serviço. A profissional foi pontual, cuidadosa e deixou minha casa impecável!"</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                 </div>
                 <div class="testimonial-author">
                     <div class="testimonial-avatar">A</div>
@@ -841,7 +1010,14 @@
             
             <div class="testimonial">
                 <div class="testimonial-content">
-                    <p>"Como profissional de limpeza, o CleanConnect mudou minha vida. Consigo bons trabalhos toda semana e o sistema de pontos me dá benefícios reais."</p>
+                    <p>"Como profissional de limpeza, o CleanConnect mudou minha vida. Consigo bons trabalhos toda semana e o pagamento é rápido e seguro."</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
                 </div>
                 <div class="testimonial-author">
                     <div class="testimonial-avatar">M</div>
@@ -855,6 +1031,13 @@
             <div class="testimonial">
                 <div class="testimonial-content">
                     <p>"Precisava de um encanador com urgência e em menos de 2 horas já tinha um profissional qualificado resolvendo meu problema. Plataforma incrível!"</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                 </div>
                 <div class="testimonial-author">
                     <div class="testimonial-avatar">C</div>
@@ -864,6 +1047,18 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Avaliações -->
+    <section class="section reviews-section" id="avaliacoes">
+        <div class="section-title">
+            <h2>Avaliações Recentes</h2>
+            <p>Opiniões reais de nossos usuários sobre os serviços</p>
+        </div>
+        
+        <div id="reviewsContainer">
+            <!-- Avaliações serão carregadas por JavaScript -->
         </div>
     </section>
 
@@ -897,7 +1092,7 @@
                 <ul>
                     <li><a href="#servicos">Serviços</a></li>
                     <li><a href="#como-funciona">Como Funciona</a></li>
-                    <li><a href="#pontos">Sistema de Pontos</a></li>
+                    <li><a href="#pagamento">Pagamentos</a></li>
                     <li><a href="#">Preços</a></li>
                     <li><a href="#">Blog</a></li>
                 </ul>
@@ -980,6 +1175,41 @@
                         <option value="professional">Profissional (oferecer serviços)</option>
                     </select>
                 </div>
+                
+                <div id="professionalFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="pixKey">Chave PIX</label>
+                        <input type="text" id="pixKey" placeholder="Sua chave PIX (CPF, e-mail, telefone ou chave aleatória)">
+                    </div>
+                    <div class="form-group">
+                        <label for="professionalCategory">Categoria de Serviço</label>
+                        <select id="professionalCategory">
+                            <option value="">Selecione sua especialidade</option>
+                            <option value="limpeza">Limpeza Residencial</option>
+                            <option value="reparos">Pequenos Reparos</option>
+                            <option value="jardinagem">Jardinagem</option>
+                            <option value="encanamento">Encanamento</option>
+                            <option value="eletrica">Serviços Elétricos</option>
+                        </select>
+                    </div>
+                    
+                    <div class="authorization-box">
+                        <h4>Autorização de Pagamento</h4>
+                        <div class="authorization-text">
+                            <p>Ao se cadastrar como profissional na plataforma CleanConnect, você concorda com os seguintes termos:</p>
+                            <p>1. A CleanConnect cobra uma taxa de 10% sobre o valor do serviço pago pelo cliente.</p>
+                            <p>2. Do valor restante, será cobrada uma taxa de 5% para a plataforma, totalizando 14.5% de taxa total (10% + 5% sobre os 90% restantes).</p>
+                            <p>3. O valor líquido a ser recebido por você será de 85.5% do valor total do serviço.</p>
+                            <p>4. Os pagamentos serão processados via PIX para a chave cadastrada.</p>
+                            <p>5. O pagamento será liberado após a confirmação do cliente de que o serviço foi concluído satisfatoriamente.</p>
+                            <p>6. Você autoriza a CleanConnect a reter as taxas mencionadas acima e repassar o valor líquido para sua conta.</p>
+                        </div>
+                        <div class="terms-checkbox">
+                            <input type="checkbox" id="termsAgreement">
+                            <label for="termsAgreement">Li e concordo com os termos de pagamento</label>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline close-modal">Cancelar</button>
@@ -1006,15 +1236,11 @@
                 </div>
                 <div class="form-group">
                     <label for="serviceDetails">Detalhes Adicionais</label>
-                    <input type="text" id="serviceDetails" placeholder="Detalhes importantes sobre o serviço">
+                    <textarea id="serviceDetails" placeholder="Detalhes importantes sobre o serviço" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Forma de Pagamento</label>
                     <div class="payment-options">
-                        <div class="payment-option" data-method="points">
-                            <i class="fas fa-coins"></i>
-                            <div>Pontos CleanConnect</div>
-                        </div>
                         <div class="payment-option" data-method="pix">
                             <i class="fas fa-qrcode"></i>
                             <div>PIX</div>
@@ -1023,12 +1249,113 @@
                             <i class="fas fa-credit-card"></i>
                             <div>Cartão</div>
                         </div>
+                        <div class="payment-option" data-method="boleto">
+                            <i class="fas fa-barcode"></i>
+                            <div>Boleto</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline close-modal">Cancelar</button>
                 <button class="btn btn-primary" id="confirmHire">Contratar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Avaliação -->
+    <div class="modal" id="reviewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Avaliar Serviço</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Avaliação (1 a 5 estrelas)</label>
+                    <div class="rating-input" style="display: flex; justify-content: center; font-size: 2rem; margin: 1rem 0;">
+                        <i class="far fa-star" data-value="1"></i>
+                        <i class="far fa-star" data-value="2"></i>
+                        <i class="far fa-star" data-value="3"></i>
+                        <i class="far fa-star" data-value="4"></i>
+                        <i class="far fa-star" data-value="5"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reviewComment">Comentário</label>
+                    <textarea id="reviewComment" placeholder="Conte como foi sua experiência..." rows="4"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancelar</button>
+                <button class="btn btn-primary" id="submitReview">Enviar Avaliação</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Admin -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Painel Administrativo</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="admin-tabs">
+                    <div class="admin-tab active" data-tab="dashboard">Dashboard</div>
+                    <div class="admin-tab" data-tab="users">Usuários</div>
+                    <div class="admin-tab" data-tab="services">Serviços</div>
+                    <div class="admin-tab" data-tab="payments">Pagamentos</div>
+                </div>
+                
+                <div class="admin-content active" id="dashboardContent">
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <h3 id="totalUsers">0</h3>
+                            <p>Usuários</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="totalServices">0</h3>
+                            <p>Serviços</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="totalRevenue">R$ 0</h3>
+                            <p>Receita Total</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="avgRating">0.0</h3>
+                            <p>Avaliação Média</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="servicesChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="admin-content" id="usersContent">
+                    <h3>Gerenciamento de Usuários</h3>
+                    <div class="user-list" id="userList">
+                        <!-- Usuários serão carregados aqui -->
+                    </div>
+                </div>
+                
+                <div class="admin-content" id="servicesContent">
+                    <h3>Serviços Ativos</h3>
+                    <div class="service-list" id="serviceList">
+                        <!-- Serviços serão carregados aqui -->
+                    </div>
+                </div>
+                
+                <div class="admin-content" id="paymentsContent">
+                    <h3>Histórico de Pagamentos</h3>
+                    <div id="paymentsList">
+                        <!-- Pagamentos serão carregados aqui -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline close-modal">Fechar</button>
             </div>
         </div>
     </div>
@@ -1044,25 +1371,53 @@
             { id: 6, name: "Encanador", icon: "faucet", price: 100, description: "Reparos hidráulicos, desentupimentos, instalações." }
         ];
 
+        // Avaliações de serviços
+        const reviews = [
+            { id: 1, serviceId: 1, userId: 1, userName: "Maria Silva", rating: 5, comment: "Excelente serviço! Profissional muito atencioso e caprichoso.", date: "2023-08-01" },
+            { id: 2, serviceId: 3, userId: 2, userName: "João Pereira", rating: 4, comment: "Resolveu meu problema rapidamente. Só demorou um pouco para chegar.", date: "2023-08-03" },
+            { id: 3, serviceId: 5, userId: 3, userName: "Ana Costa", rating: 5, comment: "Jardim ficou maravilhoso! Recomendo muito.", date: "2023-08-05" },
+            { id: 4, serviceId: 2, userId: 4, userName: "Carlos Mendes", rating: 5, comment: "Escritório ficou impecável. Equipe muito profissional.", date: "2023-08-06" }
+        ];
+
+        // Usuários
+        const users = [
+            { id: 1, name: "Cliente Teste", email: "cliente@teste.com", type: "client" },
+            { id: 2, name: "Profissional Teste", email: "profissional@teste.com", type: "professional", pixKey: "profissional@chavepix.com", category: "limpeza" },
+            { id: 3, name: "Admin", email: "admin@teste.com", type: "admin" }
+        ];
+
+        // Serviços contratados
+        let hiredServices = [
+            { id: 1, serviceId: 1, clientId: 1, professionalId: 2, date: "2023-08-10", address: "Rua Exemplo, 123", status: "completed", paymentStatus: "paid" }
+        ];
+
         // Estado da aplicação
         let currentUser = null;
-        let userPoints = 150;
         let selectedService = null;
+        let currentReviewRating = 0;
+        let currentReviewService = null;
 
         // Elementos DOM
         const loginBtn = document.getElementById('loginBtn');
         const registerBtn = document.getElementById('registerBtn');
         const searchBtn = document.getElementById('searchBtn');
         const servicesGrid = document.getElementById('servicesGrid');
+        const reviewsContainer = document.getElementById('reviewsContainer');
         const loginModal = document.getElementById('loginModal');
         const registerModal = document.getElementById('registerModal');
         const hireModal = document.getElementById('hireModal');
+        const reviewModal = document.getElementById('reviewModal');
+        const adminModal = document.getElementById('adminModal');
         const closeModals = document.querySelectorAll('.close-modal');
         const doLogin = document.getElementById('doLogin');
         const doRegister = document.getElementById('doRegister');
         const confirmHire = document.getElementById('confirmHire');
+        const submitReview = document.getElementById('submitReview');
         const ctaSearch = document.getElementById('ctaSearch');
         const ctaOffer = document.getElementById('ctaOffer');
+        const userTypeSelect = document.getElementById('userType');
+        const professionalFields = document.getElementById('professionalFields');
+        const adminTabs = document.querySelectorAll('.admin-tab');
 
         // Funções
         function renderServices() {
@@ -1105,6 +1460,47 @@
             });
         }
 
+        function renderReviews() {
+            reviewsContainer.innerHTML = '';
+            
+            reviews.forEach(review => {
+                const service = services.find(s => s.id === review.serviceId);
+                if (!service) return;
+                
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'review';
+                
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += `<i class="fas fa-star${i > review.rating ? '-half-alt' : ''}"></i>`;
+                }
+                
+                reviewElement.innerHTML = `
+                    <div class="review-header">
+                        <div class="review-user">
+                            <div class="review-avatar">${review.userName.charAt(0)}</div>
+                            <div>
+                                <h4>${review.userName}</h4>
+                                <p>${service.name}</p>
+                            </div>
+                        </div>
+                        <div class="review-date">${review.date}</div>
+                    </div>
+                    <div class="rating">
+                        ${stars}
+                    </div>
+                    <p>${review.comment}</p>
+                    <div class="review-actions">
+                        <button><i class="fas fa-thumbs-up"></i> Útil</button>
+                        <button><i class="fas fa-thumbs-down"></i> Não útil</button>
+                        <button><i class="fas fa-flag"></i> Reportar</button>
+                    </div>
+                `;
+                
+                reviewsContainer.appendChild(reviewElement);
+            });
+        }
+
         function showModal(modal) {
             modal.style.display = 'flex';
         }
@@ -1125,13 +1521,21 @@
             }
             
             // Simulação de login
-            currentUser = {
-                name: email.split('@')[0],
-                email: email
-            };
+            const user = users.find(u => u.email === email);
             
-            alert(`Bem-vindo de volta, ${currentUser.name}!`);
-            hideModals();
+            if (user) {
+                currentUser = user;
+                
+                if (user.type === 'admin') {
+                    showAdminPanel();
+                }
+                
+                alert(`Bem-vindo de volta, ${currentUser.name}!`);
+                hideModals();
+                updateUIForLoggedInUser();
+            } else {
+                alert('Credenciais inválidas.');
+            }
         }
 
         function register() {
@@ -1139,6 +1543,24 @@
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
             const userType = document.getElementById('userType').value;
+            let pixKey = '';
+            let category = '';
+            
+            if (userType === 'professional') {
+                pixKey = document.getElementById('pixKey').value;
+                category = document.getElementById('professionalCategory').value;
+                const termsAgreed = document.getElementById('termsAgreement').checked;
+                
+                if (!pixKey || !category) {
+                    alert('Por favor, preencha todos os campos para profissionais.');
+                    return;
+                }
+                
+                if (!termsAgreed) {
+                    alert('Você precisa concordar com os termos de pagamento para se cadastrar como profissional.');
+                    return;
+                }
+            }
             
             if (!name || !email || !password) {
                 alert('Por favor, preencha todos os campos.');
@@ -1146,14 +1568,21 @@
             }
             
             // Simulação de registro
-            currentUser = {
-                name: name,
-                email: email,
-                type: userType
+            const newUser = {
+                id: users.length + 1,
+                name,
+                email,
+                type: userType,
+                pixKey,
+                category
             };
+            
+            users.push(newUser);
+            currentUser = newUser;
             
             alert(`Conta criada com sucesso! Bem-vindo(a) ao CleanConnect, ${name}!`);
             hideModals();
+            updateUIForLoggedInUser();
         }
 
         function hireService() {
@@ -1170,13 +1599,217 @@
             }
             
             // Simulação de contratação
+            const newHiredService = {
+                id: hiredServices.length + 1,
+                serviceId: selectedService.id,
+                clientId: currentUser.id,
+                date,
+                address,
+                details,
+                status: 'pending',
+                paymentStatus: 'pending',
+                paymentMethod
+            };
+            
+            hiredServices.push(newHiredService);
+            
             alert(`Serviço de ${selectedService.name} contratado para ${date} no endereço ${address}. Um profissional será contatado em breve.`);
             
-            // Adiciona pontos ao cliente
-            userPoints += 50;
-            alert(`Você ganhou 50 pontos por contratar um serviço! Total: ${userPoints} pontos.`);
+            hideModals();
+            
+            // Mostrar modal de avaliação após 5 segundos (simulando conclusão do serviço)
+            setTimeout(() => {
+                currentReviewService = newHiredService;
+                showModal(reviewModal);
+            }, 5000);
+        }
+
+        function submitServiceReview() {
+            const comment = document.getElementById('reviewComment').value;
+            
+            if (currentReviewRating === 0) {
+                alert('Por favor, selecione uma avaliação de 1 a 5 estrelas.');
+                return;
+            }
+            
+            // Simulação de envio de avaliação
+            const newReview = {
+                id: reviews.length + 1,
+                serviceId: currentReviewService.serviceId,
+                userId: currentUser.id,
+                userName: currentUser.name,
+                rating: currentReviewRating,
+                comment,
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            reviews.push(newReview);
+            
+            // Atualizar status do serviço
+            const serviceIndex = hiredServices.findIndex(s => s.id === currentReviewService.id);
+            if (serviceIndex !== -1) {
+                hiredServices[serviceIndex].status = 'completed';
+                
+                // Calcular pagamento ao profissional
+                const servicePrice = services.find(s => s.id === hiredServices[serviceIndex].serviceId).price;
+                const platformFee = servicePrice * 0.10;
+                const adminFee = (servicePrice - platformFee) * 0.05;
+                const professionalPayment = servicePrice - platformFee - adminFee;
+                
+                alert(`Avaliação enviada com sucesso! O profissional receberá R$ ${professionalPayment.toFixed(2)} via PIX.`);
+            }
             
             hideModals();
+            renderReviews();
+        }
+
+        function showAdminPanel() {
+            // Atualizar estatísticas
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('totalServices').textContent = hiredServices.length;
+            
+            // Calcular receita total
+            const totalRevenue = hiredServices.reduce((sum, service) => {
+                const servicePrice = services.find(s => s.id === service.serviceId).price;
+                return sum + (servicePrice * 0.145); // 14.5% de taxa total
+            }, 0);
+            
+            document.getElementById('totalRevenue').textContent = `R$ ${totalRevenue.toFixed(2)}`;
+            
+            // Calcular avaliação média
+            const avgRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+            document.getElementById('avgRating').textContent = avgRating.toFixed(1);
+            
+            // Renderizar gráfico
+            renderServicesChart();
+            
+            // Renderizar lista de usuários
+            renderUserList();
+            
+            // Renderizar lista de serviços
+            renderServiceList();
+            
+            // Mostrar modal de admin
+            showModal(adminModal);
+        }
+
+        function renderServicesChart() {
+            const ctx = document.getElementById('servicesChart').getContext('2d');
+            
+            // Contar serviços por categoria
+            const serviceCounts = {};
+            hiredServices.forEach(service => {
+                const serviceData = services.find(s => s.id === service.serviceId);
+                if (serviceData) {
+                    serviceCounts[serviceData.name] = (serviceCounts[serviceData.name] || 0) + 1;
+                }
+            });
+            
+            const labels = Object.keys(serviceCounts);
+            const data = Object.values(serviceCounts);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Serviços Contratados',
+                        data: data,
+                        backgroundColor: [
+                            'rgba(42, 157, 143, 0.7)',
+                            'rgba(233, 196, 106, 0.7)',
+                            'rgba(231, 111, 81, 0.7)',
+                            'rgba(38, 70, 83, 0.7)',
+                            'rgba(155, 193, 188, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(42, 157, 143)',
+                            'rgb(233, 196, 106)',
+                            'rgb(231, 111, 81)',
+                            'rgb(38, 70, 83)',
+                            'rgb(155, 193, 188)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderUserList() {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            
+            users.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item';
+                userItem.innerHTML = `
+                    <div>
+                        <strong>${user.name}</strong>
+                        <div>${user.email} (${user.type})</div>
+                    </div>
+                    <div class="user-actions">
+                        <button class="action-btn edit-user" data-id="${user.id}"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete-user" data-id="${user.id}"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                userList.appendChild(userItem);
+            });
+        }
+
+        function renderServiceList() {
+            const serviceList = document.getElementById('serviceList');
+            serviceList.innerHTML = '';
+            
+            hiredServices.forEach(service => {
+                const serviceData = services.find(s => s.id === service.serviceId);
+                const client = users.find(u => u.id === service.clientId);
+                const professional = service.professionalId ? users.find(u => u.id === service.professionalId) : null;
+                
+                if (!serviceData) return;
+                
+                const serviceItem = document.createElement('div');
+                serviceItem.className = 'service-item';
+                serviceItem.innerHTML = `
+                    <div>
+                        <strong>${serviceData.name}</strong>
+                        <div>Cliente: ${client.name}</div>
+                        <div>Status: ${service.status === 'completed' ? 'Concluído' : 'Pendente'}</div>
+                    </div>
+                    <div>
+                        <div>Data: ${service.date}</div>
+                        <div>Pagamento: ${service.paymentStatus === 'paid' ? 'Pago' : 'Pendente'}</div>
+                    </div>
+                `;
+                serviceList.appendChild(serviceItem);
+            });
+        }
+
+        function updateUIForLoggedInUser() {
+            if (currentUser) {
+                loginBtn.innerHTML = `<i class="fas fa-user"></i> ${currentUser.name.split(' ')[0]}`;
+                registerBtn.style.display = 'none';
+                
+                if (currentUser.type === 'professional') {
+                    const servicesLink = document.createElement('a');
+                    servicesLink.href = '#';
+                    servicesLink.innerHTML = '<i class="fas fa-tasks"></i> Serviços';
+                    servicesLink.style.marginRight = '15px';
+                    servicesLink.style.color = 'white';
+                    document.querySelector('.user-actions').insertBefore(servicesLink, loginBtn);
+                }
+            }
         }
 
         function searchServices() {
@@ -1248,6 +1881,7 @@
         doLogin.addEventListener('click', login);
         doRegister.addEventListener('click', register);
         confirmHire.addEventListener('click', hireService);
+        submitReview.addEventListener('click', submitServiceReview);
         
         ctaSearch.addEventListener('click', () => {
             document.getElementById('searchInput').scrollIntoView({ behavior: 'smooth' });
@@ -1258,6 +1892,7 @@
             if (!currentUser) {
                 showModal(registerModal);
                 document.getElementById('userType').value = 'professional';
+                professionalFields.style.display = 'block';
             } else {
                 alert('Você já está cadastrado como profissional! Atualize seu perfil para oferecer serviços.');
             }
@@ -1271,8 +1906,71 @@
             });
         });
 
+        // Seleção de avaliação por estrelas
+        document.querySelectorAll('.rating-input i').forEach(star => {
+            star.addEventListener('click', () => {
+                const value = parseInt(star.dataset.value);
+                currentReviewRating = value;
+                
+                document.querySelectorAll('.rating-input i').forEach((s, i) => {
+                    if (i < value) {
+                        s.classList.remove('far');
+                        s.classList.add('fas');
+                    } else {
+                        s.classList.remove('fas');
+                        s.classList.add('far');
+                    }
+                });
+            });
+        });
+
+        // Alternar campos para profissionais
+        userTypeSelect.addEventListener('change', () => {
+            if (userTypeSelect.value === 'professional') {
+                professionalFields.style.display = 'block';
+            } else {
+                professionalFields.style.display = 'none';
+            }
+        });
+
+        // Alternar abas do painel admin
+        adminTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remover classe ativa de todas as abas
+                adminTabs.forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.admin-content').forEach(c => c.classList.remove('active'));
+                
+                // Adicionar classe ativa à aba clicada
+                tab.classList.add('active');
+                
+                // Mostrar conteúdo correspondente
+                const tabId = tab.dataset.tab;
+                document.getElementById(`${tabId}Content`).classList.add('active');
+            });
+        });
+
         // Inicialização
         renderServices();
+        renderReviews();
+        
+        // Simular login de admin para demonstração
+        setTimeout(() => {
+            const adminUser = users.find(u => u.type === 'admin');
+            if (adminUser) {
+                document.querySelector('.user-actions').innerHTML += `
+                    <button class="btn btn-outline" id="adminBtn" style="margin-left: 15px;">
+                        <i class="fas fa-cog"></i> Admin
+                    </button>
+                `;
+                document.getElementById('adminBtn').addEventListener('click', () => {
+                    if (currentUser && currentUser.type === 'admin') {
+                        showAdminPanel();
+                    } else {
+                        alert('Apenas administradores podem acessar esta área.');
+                    }
+                });
+            }
+        }, 1000);
     </script>
 </body>
 </html>
