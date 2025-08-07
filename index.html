@@ -3,669 +3,1276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot de Robótica Inteligente</title>
+    <title>CleanConnect - Plataforma de Serviços</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --bot-bg: #ecf0f1;
-            --user-bg: #3498db;
-            --warning: #e74c3c;
-            --success: #2ecc71;
+            --primary: #2a9d8f;
+            --primary-dark: #1d7a6f;
+            --secondary: #e9c46a;
+            --accent: #e76f51;
+            --light: #f8f9fa;
+            --dark: #264653;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #2a9d8f;
+            --warning: #e9c46a;
+            --danger: #e76f51;
         }
         
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
         }
         
-        .chat-container {
-            width: 100%;
-            max-width: 900px;
-            height: 85vh;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .chat-header {
-            background: linear-gradient(to right, var(--primary), #1e3c72);
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 20px;
-            text-align: center;
-            position: relative;
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
         }
         
-        .chat-header h1 {
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
             font-size: 1.8rem;
-            margin-bottom: 5px;
+            font-weight: 800;
         }
         
-        .chat-header p {
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0.8rem;
+            border-radius: 20px;
+        }
+        
+        nav ul li a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+        
+        .btn-primary:hover {
+            background-color: #d4af5a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            margin-right: 15px;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(42, 157, 143, 0.9), rgba(38, 70, 83, 0.9)), url('https://images.unsplash.com/photo-1581578021576-72a5b1d8d2a3?auto=format&fit=crop&w=1200') center/cover;
+            color: white;
+            padding: 5rem 5%;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
             opacity: 0.9;
+        }
+        
+        .search-container {
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            display: flex;
+            max-width: 600px;
+            margin: 2rem auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .search-container input {
+            flex: 1;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px 0 0 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .search-container button {
+            border-radius: 50px;
+            padding: 0.8rem 2rem;
+        }
+        
+        /* Main Content */
+        .section {
+            padding: 5rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .service-icon {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .service-content {
+            padding: 1.5rem;
+        }
+        
+        .service-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .service-content p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
             font-size: 0.95rem;
         }
         
-        .ai-badge {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: var(--success);
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f9fa"/><path d="M0 50 Q 25 30, 50 50 T 100 50" stroke="%23e9ecef" stroke-width="0.5" fill="none"/></svg>');
-            background-size: 120px;
-        }
-        
-        .message {
-            max-width: 85%;
-            padding: 12px 18px;
-            border-radius: 18px;
-            line-height: 1.5;
-            position: relative;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .bot-message {
-            background-color: var(--bot-bg);
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-            border: 1px solid #ddd;
-        }
-        
-        .user-message {
-            background: linear-gradient(to right, var(--secondary), #2c82c9);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-        
-        .chat-input-container {
-            display: flex;
-            padding: 15px;
-            background-color: #f0f4f8;
-            border-top: 1px solid #e0e4e8;
-            gap: 10px;
-        }
-        
-        #user-input {
-            flex: 1;
-            padding: 15px 20px;
-            border: 2px solid #ddd;
-            border-radius: 30px;
-            outline: none;
-            font-size: 16px;
-            transition: all 0.3s;
-            background: white;
-        }
-        
-        #user-input:focus {
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-        
-        #send-button {
-            background: linear-gradient(to right, var(--primary), #1e3c72);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 55px;
-            height: 55px;
-            cursor: pointer;
-            font-size: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        #send-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
-        
-        .disclaimer {
-            background-color: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            padding: 15px;
-            text-align: center;
-            font-size: 14px;
-            color: #6c757d;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .typing-indicator {
-            display: none;
-            align-self: flex-start;
-            background-color: var(--bot-bg);
-            padding: 12px 18px;
-            border-radius: 18px;
-            margin-bottom: 5px;
-        }
-        
-        .typing-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            background-color: #7f8c8d;
-            border-radius: 50%;
-            margin: 0 3px;
-            animation: typing 1.4s infinite;
-        }
-        
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-5px); }
-        }
-        
-        .suggestion-box {
-            display: flex;
-            gap: 10px;
-            padding: 0 20px 15px;
-            background: #f0f4f8;
-            flex-wrap: wrap;
-        }
-        
-        .suggestion {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            padding: 8px 15px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .suggestion:hover {
-            background: var(--secondary);
-            color: white;
-            border-color: var(--secondary);
-            transform: translateY(-2px);
-        }
-        
-        .step-highlight {
-            background-color: #fff9c4;
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        
-        .montagem-title {
+        .service-price {
+            font-weight: 700;
+            font-size: 1.2rem;
             color: var(--primary);
-            font-weight: bold;
-            margin: 10px 0 5px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
         }
         
-        .montagem-list {
-            padding-left: 20px;
-            margin: 8px 0;
-        }
-        
-        .montagem-list li {
-            margin-bottom: 6px;
-        }
-        
-        .capabilities {
+        .service-actions {
             display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 1rem;
         }
         
-        .capability {
-            background: rgba(52, 152, 219, 0.1);
-            border: 1px solid rgba(52, 152, 219, 0.3);
-            border-radius: 10px;
-            padding: 10px;
-            font-size: 0.85rem;
+        /* How it works */
+        .how-it-works {
+            background: var(--light);
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 0 auto 1.5rem;
         }
         
-        .capability i {
+        /* Points System */
+        .points-system {
+            background: linear-gradient(135deg, var(--dark), #1a3c46);
+            color: white;
+            text-align: center;
+        }
+        
+        .points-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+        
+        .points-card {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .points-card i {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
             color: var(--secondary);
         }
         
-        .warning {
-            color: var(--warning);
+        .points-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .points-card p {
+            opacity: 0.8;
+        }
+        
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .badge i {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            background: white;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            position: relative;
+        }
+        
+        .testimonial:before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 5rem;
+            color: var(--primary);
+            opacity: 0.1;
+            font-family: serif;
+            line-height: 1;
+        }
+        
+        .testimonial-content {
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, var(--secondary), #e9b755);
+            text-align: center;
+            padding: 4rem 5%;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-dark {
+            background: var(--dark);
+            color: white;
+        }
+        
+        .btn-dark:hover {
+            background: #1a3c46;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 5%;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 3rem;
+            color: #adb5bd;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 3rem;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: modalOpen 0.4s ease;
+        }
+        
+        @keyframes modalOpen {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.5rem;
+            position: relative;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .modal-footer {
+            padding: 1rem 2rem;
+            background: var(--light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        /* Payment */
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .payment-option {
+            flex: 1;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-option.selected {
+            border-color: var(--primary);
+            background: rgba(42, 157, 143, 0.1);
+        }
+        
+        .payment-option i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            nav ul {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 3rem 5%;
+            }
+            
+            .section {
+                padding: 3rem 5%;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                border-radius: 15px;
+            }
+            
+            .search-container input {
+                border-radius: 15px 15px 0 0;
+                padding: 1rem;
+            }
+            
+            .search-container button {
+                border-radius: 0 0 15px 15px;
+            }
+            
+            .cta h2 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <div class="ai-badge">
-                <i class="fas fa-robot"></i> IA Especializada
+    <!-- Cabeçalho -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-broom"></i>
+                CleanConnect
             </div>
-            <h1>RoboAssistant - Suporte para Montagens</h1>
-            <p>Assistente especializado em 5 montagens de robótica</p>
-        </div>
-        
-        <div class="chat-messages" id="chat-messages">
-            <div class="message bot-message">
-                <p>Olá! Sou o RoboAssistant, especialista em montagem de kits de robótica.</p>
-                <p>Posso te ajudar com <strong>5 montagens distintas</strong> ou responder perguntas técnicas sobre robótica.</p>
-                
-                <div class="montagem-title">Montagens disponíveis:</div>
-                <ul class="montagem-list">
-                    <li><strong>Robô Explorador</strong> (montagem1)</li>
-                    <li><strong>Braço Robótico</strong> (montagem2)</li>
-                    <li><strong>Carro Autônomo</strong> (montagem3)</li>
-                    <li><strong>Drone Terrestre</strong> (montagem4)</li>
-                    <li><strong>Robô de Combate</strong> (montagem5)</li>
+            <nav>
+                <ul>
+                    <li><a href="#servicos">Serviços</a></li>
+                    <li><a href="#como-funciona">Como Funciona</a></li>
+                    <li><a href="#pontos">Sistema de Pontos</a></li>
+                    <li><a href="#depoimentos">Depoimentos</a></li>
                 </ul>
-                
-                <div class="capabilities">
-                    <div class="capability"><i class="fas fa-check-circle"></i> Explicar passos de montagem</div>
-                    <div class="capability"><i class="fas fa-check-circle"></i> Solucionar problemas</div>
-                    <div class="capability"><i class="fas fa-check-circle"></i> Curiosidades de robótica</div>
-                    <div class="capability"><i class="fas fa-check-circle"></i> Dicas técnicas</div>
-                </div>
-                
-                <p>Como posso ajudar hoje?</p>
+            </nav>
+            <div class="user-actions">
+                <button class="btn btn-outline" id="loginBtn"><i class="fas fa-user"></i> Entrar</button>
+                <button class="btn btn-primary" id="registerBtn"><i class="fas fa-user-plus"></i> Cadastrar</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Conectamos quem precisa com quem faz</h1>
+            <p>Encontre profissionais qualificados para serviços de limpeza, manutenção e reparos ou ofereça seus serviços e ganhe dinheiro</p>
+            
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Qual serviço você precisa? Ex: limpeza residencial">
+                <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i> Buscar</button>
+            </div>
+            
+            <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                <span><i class="fas fa-check-circle"></i> Profissionais verificados</span>
+                <span><i class="fas fa-shield-alt"></i> Pagamento seguro</span>
+                <span><i class="fas fa-medal"></i> Sistema de pontos</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Serviços -->
+    <section class="section" id="servicos">
+        <div class="section-title">
+            <h2>Serviços Disponíveis</h2>
+            <p>Encontre profissionais qualificados para diversos tipos de serviços</p>
+        </div>
+        
+        <div class="services-grid" id="servicesGrid">
+            <!-- Serviços serão carregados por JavaScript -->
+        </div>
+    </section>
+
+    <!-- Como Funciona -->
+    <section class="section how-it-works" id="como-funciona">
+        <div class="section-title">
+            <h2>Como Funciona</h2>
+            <p>Simples, rápido e seguro para clientes e profissionais</p>
+        </div>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Cadastre-se</h3>
+                <p>Crie sua conta como cliente ou profissional em poucos minutos</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Encontre ou Ofereça</h3>
+                <p>Busque serviços ou publique suas habilidades e disponibilidade</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Conecte-se</h3>
+                <p>Combine os detalhes do serviço pelo chat da plataforma</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Realize e Avalie</h3>
+                <p>Execute o serviço, pague com segurança e avalie a experiência</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sistema de Pontos -->
+    <section class="section points-system" id="pontos">
+        <div class="section-title">
+            <h2>Sistema de Pontos CleanConnect</h2>
+            <p>Ganhe recompensas ao usar nossa plataforma</p>
+        </div>
+        
+        <div class="points-container">
+            <div class="points-card">
+                <i class="fas fa-coins"></i>
+                <h3>Para Clientes</h3>
+                <p>Ganhe pontos ao contratar serviços, avaliar profissionais, indicar amigos e completar seu perfil. Troque pontos por descontos em próximos serviços.</p>
+            </div>
+            
+            <div class="points-card">
+                <i class="fas fa-award"></i>
+                <h3>Para Profissionais</h3>
+                <p>Acumule pontos ao concluir serviços, receber boas avaliações, responder rápido e manter alta taxa de aceitação. Troque por destaque no app e redução de taxas.</p>
             </div>
         </div>
         
-        <div class="typing-indicator" id="typing-indicator">
-            <span class="typing-dot"></span>
-            <span class="typing-dot"></span>
-            <span class="typing-dot"></span>
+        <div class="badges">
+            <div class="badge">
+                <i class="fas fa-seedling"></i>
+                <span>Iniciante</span>
+            </div>
+            <div class="badge">
+                <i class="fas fa-star"></i>
+                <span>Bronze</span>
+            </div>
+            <div class="badge">
+                <i class="fas fa-star-half-alt"></i>
+                <span>Prata</span>
+            </div>
+            <div class="badge">
+                <i class="fas fa-star"></i>
+                <span>Ouro</span>
+            </div>
+            <div class="badge">
+                <i class="fas fa-crown"></i>
+                <span>Diamante</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section class="section testimonials" id="depoimentos">
+        <div class="section-title">
+            <h2>O Que Dizem Nossos Usuários</h2>
+            <p>Confira experiências reais de clientes e profissionais</p>
         </div>
         
-        <div class="suggestion-box" id="suggestion-box">
-            <div class="suggestion" data-query="Quais montagens você conhece?">Montagens disponíveis</div>
-            <div class="suggestion" data-query="Explique o Robô Explorador">Robô Explorador</div>
-            <div class="suggestion" data-query="Passo a passo da montagem1">Passo a passo</div>
-            <div class="suggestion" data-query="Dicas para iniciantes">Dicas técnicas</div>
+        <div class="testimonial-grid">
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"Contratei uma faxina pelo CleanConnect e fiquei impressionada com a qualidade do serviço. A profissional foi pontual, cuidadosa e deixou minha casa impecável!"</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">A</div>
+                    <div>
+                        <h4>Ana Silva</h4>
+                        <p>Cliente em São Paulo</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"Como profissional de limpeza, o CleanConnect mudou minha vida. Consigo bons trabalhos toda semana e o sistema de pontos me dá benefícios reais."</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">M</div>
+                    <div>
+                        <h4>Marcos Oliveira</h4>
+                        <p>Profissional em Belo Horizonte</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"Precisava de um encanador com urgência e em menos de 2 horas já tinha um profissional qualificado resolvendo meu problema. Plataforma incrível!"</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">C</div>
+                    <div>
+                        <h4>Carlos Mendes</h4>
+                        <p>Cliente no Rio de Janeiro</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <h2>Comece a usar agora mesmo!</h2>
+        <p>Milhares de profissionais e clientes já estão conectados na nossa plataforma</p>
+        
+        <div class="cta-buttons">
+            <button class="btn btn-dark" id="ctaSearch"><i class="fas fa-search"></i> Buscar Serviços</button>
+            <button class="btn btn-primary" id="ctaOffer"><i class="fas fa-user-check"></i> Oferecer Serviços</button>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>CleanConnect</h3>
+                <p>A maneira mais inteligente de conectar quem precisa de serviços com quem oferece soluções profissionais.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a href="#servicos">Serviços</a></li>
+                    <li><a href="#como-funciona">Como Funciona</a></li>
+                    <li><a href="#pontos">Sistema de Pontos</a></li>
+                    <li><a href="#">Preços</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Para Profissionais</h3>
+                <ul>
+                    <li><a href="#">Trabalhe Conosco</a></li>
+                    <li><a href="#">Como Ganhar Mais</a></li>
+                    <li><a href="#">Benefícios</a></li>
+                    <li><a href="#">Treinamentos</a></li>
+                    <li><a href="#">Dúvidas Frequentes</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> contato@cleanconnect.com</li>
+                    <li><i class="fas fa-phone"></i> (11) 99999-9999</li>
+                    <li><i class="fas fa-map-marker-alt"></i> São Paulo, SP - Brasil</li>
+                </ul>
+            </div>
         </div>
         
-        <div class="chat-input-container">
-            <input type="text" id="user-input" placeholder="Digite sua pergunta sobre robótica..." autocomplete="off">
-            <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+        <div class="copyright">
+            <p>&copy; 2023 CleanConnect. Todos os direitos reservados.</p>
         </div>
-        
-        <div class="disclaimer">
-            <i class="fas fa-info-circle"></i> Demonstração técnica - Conhecimento limitado às 5 montagens configuradas
+    </footer>
+
+    <!-- Modal de Login -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Entrar na Plataforma</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="loginEmail">E-mail</label>
+                    <input type="email" id="loginEmail" placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Senha</label>
+                    <input type="password" id="loginPassword" placeholder="Sua senha">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancelar</button>
+                <button class="btn btn-primary" id="doLogin">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Criar Conta</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="registerName">Nome Completo</label>
+                    <input type="text" id="registerName" placeholder="Seu nome completo">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">E-mail</label>
+                    <input type="email" id="registerEmail" placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Senha</label>
+                    <input type="password" id="registerPassword" placeholder="Crie uma senha">
+                </div>
+                <div class="form-group">
+                    <label for="userType">Tipo de Conta</label>
+                    <select id="userType">
+                        <option value="client">Cliente (contratar serviços)</option>
+                        <option value="professional">Profissional (oferecer serviços)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancelar</button>
+                <button class="btn btn-primary" id="doRegister">Criar Conta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Contratação -->
+    <div class="modal" id="hireModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="hireModalTitle">Contratar Serviço</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="serviceDate">Data do Serviço</label>
+                    <input type="date" id="serviceDate">
+                </div>
+                <div class="form-group">
+                    <label for="serviceAddress">Endereço</label>
+                    <input type="text" id="serviceAddress" placeholder="Onde o serviço será realizado">
+                </div>
+                <div class="form-group">
+                    <label for="serviceDetails">Detalhes Adicionais</label>
+                    <input type="text" id="serviceDetails" placeholder="Detalhes importantes sobre o serviço">
+                </div>
+                <div class="form-group">
+                    <label>Forma de Pagamento</label>
+                    <div class="payment-options">
+                        <div class="payment-option" data-method="points">
+                            <i class="fas fa-coins"></i>
+                            <div>Pontos CleanConnect</div>
+                        </div>
+                        <div class="payment-option" data-method="pix">
+                            <i class="fas fa-qrcode"></i>
+                            <div>PIX</div>
+                        </div>
+                        <div class="payment-option" data-method="card">
+                            <i class="fas fa-credit-card"></i>
+                            <div>Cartão</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancelar</button>
+                <button class="btn btn-primary" id="confirmHire">Contratar</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Base de conhecimento expandida para as montagens
-        const knowledgeBase = {
-            montagens: {
-                "montagem1": {
-                    id: "montagem1",
-                    nome: "Robô Explorador",
-                    keywords: ["explorador", "robo explorador", "exploracao", "montagem1"],
-                    passos: [
-                        "1. Conectar o módulo de controle principal",
-                        "2. Fixar os sensores infravermelhos nas posições indicadas",
-                        "3. Instalar as rodas motorizadas e conectar aos motores",
-                        "4. Conectar a bateria LiPo 9V ao controlador",
-                        "5. Calibrar sensores usando o software RoboCalib"
-                    ],
-                    dificuldade: "Iniciante",
-                    duracao: "2 horas",
-                    materiais: [
-                        "Módulo de controle Arduino",
-                        "2 motores DC com caixa de redução",
-                        "Chassi em acrílico",
-                        "Sensores infravermelhos (2 unidades)",
-                        "Bateria LiPo 9V"
-                    ],
-                    dicas: [
-                        "Calibre os sensores em uma superfície branca antes da montagem",
-                        "Teste cada motor separadamente antes de instalar",
-                        "Use cola quente para fixar componentes delicados"
-                    ]
-                },
-                "montagem2": {
-                    id: "montagem2",
-                    nome: "Braço Robótico",
-                    keywords: ["braco robotico", "braco", "robotico", "montagem2"],
-                    passos: [
-                        "1. Montar a base giratória com o motor de passo",
-                        "2. Instalar as juntas servo-motores nas posições corretas",
-                        "3. Fixar a garra pneumática no segmento final",
-                        "4. Conectar o controlador Arduino e módulo de potência",
-                        "5. Programar sequências básicas de movimento"
-                    ],
-                    dificuldade: "Intermediário",
-                    duracao: "4 horas",
-                    materiais: [
-                        "Servo motores (4 unidades)",
-                        "Estrutura em acrílico cortada a laser",
-                        "Controlador Arduino Mega",
-                        "Kit de garra pneumática",
-                        "Fonte de alimentação 12V"
-                    ],
-                    dicas: [
-                        "Verifique o alcance de movimento de cada junta antes de fixar",
-                        "Use lubrificante a base de silicone nas juntas",
-                        "Calibre os ângulos limites no software antes de operar"
-                    ]
-                },
-                "montagem3": {
-                    id: "montagem3",
-                    nome: "Carro Autônomo",
-                    keywords: ["carro autonomo", "carro", "autonomo", "montagem3"],
-                    passos: [
-                        "1. Montar a estrutura do chassi",
-                        "2. Instalar o sistema de direção servo-controlado",
-                        "3. Posicionar sensores ultrassônicos frontal e laterais",
-                        "4. Conectar módulo Bluetooth para comunicação",
-                        "5. Carregar programa de navegação autônoma"
-                    ],
-                    dificuldade: "Avançado",
-                    duracao: "6 horas",
-                    materiais: [
-                        "Kit chassi completo",
-                        "Módulo sensor ultrassônico HC-SR04 (3 unidades)",
-                        "Arduino com shield motor",
-                        "Módulo Bluetooth HC-05",
-                        "Bateria LiPo 11.1V"
-                    ]
-                },
-                "montagem4": {
-                    id: "montagem4",
-                    nome: "Drone Terrestre",
-                    keywords: ["drone terrestre", "drone", "terrestre", "montagem4"],
-                    passos: [
-                        "1. Montar a estrutura com 4 rodas omnidirecionais",
-                        "2. Instalar as câmeras FPV frontal e traseira",
-                        "3. Conectar módulo de controle remoto",
-                        "4. Configurar sistema de transmissão de vídeo",
-                        "5. Testar controles e sistema FPV"
-                    ],
-                    dificuldade: "Intermediário",
-                    duracao: "5 horas"
-                },
-                "montagem5": {
-                    id: "montagem5",
-                    nome: "Robô de Combate",
-                    keywords: ["robo de combate", "combate", "robo luta", "montagem5"],
-                    passos: [
-                        "1. Soldar estrutura reforçada de metal",
-                        "2. Instalar sistema de armas controlado por servo",
-                        "3. Montar proteções laterais articuladas",
-                        "4. Configurar controle remoto de longo alcance",
-                        "5. Testar resistência e sistemas de segurança"
-                    ],
-                    dificuldade: "Avançado",
-                    duracao: "8 horas"
-                }
-            },
-            
-            curiosidades: [
-                "O primeiro robô industrial foi instalado na General Motors em 1961",
-                "Robôs aspiradores usam algoritmos SLAM para mapear ambientes",
-                "O termo 'robô' vem da palavra tcheca 'robota', que significa trabalho forçado",
-                "Robôs cirúrgicos podem realizar procedimentos com precisão de 0.1mm",
-                "O robô mais rápido do mundo pode correr a 46 km/h"
-            ],
-            
-            suporte: [
-                "Verifique todas as conexões de energia e dados",
-                "Recarregue a bateria completamente antes de testar",
-                "Reinicie o controlador principal para resolver erros de software",
-                "Verifique se há atualizações de firmware disponíveis",
-                "Calibre os sensores novamente seguindo o manual",
-                "Teste componentes individualmente para identificar falhas"
-            ],
-            
-            dicas: [
-                "Sempre use luvas ao manipular componentes eletrônicos",
-                "Organize as peças antes de começar a montagem",
-                "Documente cada etapa com fotos para referência futura",
-                "Teste cada subsistema antes do montagem completa",
-                "Mantenha uma estação de trabalho bem iluminada e organizada"
-            ]
-        };
+        // Dados da aplicação
+        const services = [
+            { id: 1, name: "Limpeza Residencial", icon: "broom", price: 120, description: "Limpeza completa da sua casa com produtos de qualidade e profissionais treinados." },
+            { id: 2, name: "Limpeza Comercial", icon: "building", price: 250, description: "Serviços especializados para escritórios, lojas e estabelecimentos comerciais." },
+            { id: 3, name: "Pequenos Reparos", icon: "tools", price: 80, description: "Consertos elétricos, hidráulicos, montagem de móveis e outros reparos domésticos." },
+            { id: 4, name: "Limpeza Automotiva", icon: "car", price: 70, description: "Limpeza interna e externa do seu veículo com produtos profissionais." },
+            { id: 5, name: "Jardineiro", icon: "leaf", price: 90, description: "Manutenção de jardins, poda de árvores e plantas, paisagismo." },
+            { id: 6, name: "Encanador", icon: "faucet", price: 100, description: "Reparos hidráulicos, desentupimentos, instalações." }
+        ];
+
+        // Estado da aplicação
+        let currentUser = null;
+        let userPoints = 150;
+        let selectedService = null;
 
         // Elementos DOM
-        const chatMessages = document.getElementById('chat-messages');
-        const userInput = document.getElementById('user-input');
-        const sendButton = document.getElementById('send-button');
-        const typingIndicator = document.getElementById('typing-indicator');
-        const suggestionBox = document.getElementById('suggestion-box');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const searchBtn = document.getElementById('searchBtn');
+        const servicesGrid = document.getElementById('servicesGrid');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const hireModal = document.getElementById('hireModal');
+        const closeModals = document.querySelectorAll('.close-modal');
+        const doLogin = document.getElementById('doLogin');
+        const doRegister = document.getElementById('doRegister');
+        const confirmHire = document.getElementById('confirmHire');
+        const ctaSearch = document.getElementById('ctaSearch');
+        const ctaOffer = document.getElementById('ctaOffer');
 
-        // Função para adicionar mensagem no chat
-        function addMessage(text, isUser = false) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message');
-            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+        // Funções
+        function renderServices() {
+            servicesGrid.innerHTML = '';
+            services.forEach(service => {
+                const serviceCard = document.createElement('div');
+                serviceCard.className = 'service-card';
+                serviceCard.innerHTML = `
+                    <div class="service-icon">
+                        <i class="fas fa-${service.icon}"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>${service.name}</h3>
+                        <p>${service.description}</p>
+                        <div class="service-price">A partir de R$ ${service.price}</div>
+                        <div class="service-actions">
+                            <button class="btn btn-outline" style="color: var(--primary); border-color: var(--primary);">Detalhes</button>
+                            <button class="btn btn-primary hire-btn" data-id="${service.id}">Contratar</button>
+                        </div>
+                    </div>
+                `;
+                servicesGrid.appendChild(serviceCard);
+            });
             
-            // Formatar passos com destaque
-            const formattedText = text.replace(/(Passo \d+:|passo \d+)/gi, '<span class="step-highlight">$1</span>');
-            messageDiv.innerHTML = formattedText;
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            // Adiciona event listeners aos botões de contratação
+            document.querySelectorAll('.hire-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const serviceId = parseInt(e.target.dataset.id);
+                    selectedService = services.find(s => s.id === serviceId);
+                    
+                    if (!currentUser) {
+                        alert('Por favor, faça login para contratar um serviço.');
+                        showModal(loginModal);
+                        return;
+                    }
+                    
+                    document.getElementById('hireModalTitle').textContent = `Contratar ${selectedService.name}`;
+                    showModal(hireModal);
+                });
+            });
         }
 
-        // Simular processamento da IA
-        function processUserInput(input) {
-            typingIndicator.style.display = 'flex';
-            
-            setTimeout(() => {
-                typingIndicator.style.display = 'none';
-                const response = generateResponse(input);
-                addMessage(response);
-            }, 800);
+        function showModal(modal) {
+            modal.style.display = 'flex';
         }
 
-        // Sistema de correspondência de padrões flexível
-        function findMatchingMontagem(input) {
-            const lowerInput = input.toLowerCase();
-            
-            // Verificar correspondência direta por ID
-            for (const [id, montagem] of Object.entries(knowledgeBase.montagens)) {
-                if (lowerInput.includes(id)) return montagem;
-            }
-            
-            // Verificar por nome e keywords
-            for (const montagem of Object.values(knowledgeBase.montagens)) {
-                if (lowerInput.includes(montagem.nome.toLowerCase())) return montagem;
-                
-                // Verificar keywords
-                for (const keyword of montagem.keywords) {
-                    if (lowerInput.includes(keyword)) return montagem;
-                }
-            }
-            
-            return null;
+        function hideModals() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
         }
 
-        // Gerar resposta inteligente
-        function generateResponse(input) {
-            const lowerInput = input.toLowerCase().trim();
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
             
-            // 1. Saudação
-            if (/olá|oi|bom dia|boa tarde|boa noite|hello|hi/.test(lowerInput)) {
-                return "Olá! Como posso te ajudar com suas montagens de robótica hoje?";
+            if (!email || !password) {
+                alert('Por favor, preencha todos os campos.');
+                return;
             }
             
-            // 2. Listar montagens
-            if (/(quais|quais são|listar|mostrar|montagens|atividades)/.test(lowerInput) && 
-                /(montagem|atividade|rob[oô]|kit)/.test(lowerInput)) {
-                
-                let response = "Temos 5 montagens disponíveis:<br><br>";
-                for (const [id, montagem] of Object.entries(knowledgeBase.montagens)) {
-                    response += `<strong>${montagem.nome}</strong> (${id})<br>`;
-                    response += `Dificuldade: ${montagem.dificuldade}, Duração: ${montagem.duracao}<br><br>`;
-                }
-                response += "Sobre qual você gostaria de saber mais?";
-                return response;
+            // Simulação de login
+            currentUser = {
+                name: email.split('@')[0],
+                email: email
+            };
+            
+            alert(`Bem-vindo de volta, ${currentUser.name}!`);
+            hideModals();
+        }
+
+        function register() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const userType = document.getElementById('userType').value;
+            
+            if (!name || !email || !password) {
+                alert('Por favor, preencha todos os campos.');
+                return;
             }
             
-            // 3. Perguntas sobre montagens específicas
-            const montagem = findMatchingMontagem(lowerInput);
-            if (montagem) {
-                // Perguntou por passo específico?
-                const passoMatch = lowerInput.match(/(passo|etapa)\s*(\d+)/);
-                if (passoMatch) {
-                    const passoNum = parseInt(passoMatch[2]);
-                    if (passoNum > 0 && passoNum <= montagem.passos.length) {
-                        return `<strong>Passo ${passoNum} da ${montagem.nome}:</strong><br>${montagem.passos[passoNum-1]}`;
+            // Simulação de registro
+            currentUser = {
+                name: name,
+                email: email,
+                type: userType
+            };
+            
+            alert(`Conta criada com sucesso! Bem-vindo(a) ao CleanConnect, ${name}!`);
+            hideModals();
+        }
+
+        function hireService() {
+            if (!selectedService) return;
+            
+            const date = document.getElementById('serviceDate').value;
+            const address = document.getElementById('serviceAddress').value;
+            const details = document.getElementById('serviceDetails').value;
+            const paymentMethod = document.querySelector('.payment-option.selected')?.dataset.method;
+            
+            if (!date || !address || !paymentMethod) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            // Simulação de contratação
+            alert(`Serviço de ${selectedService.name} contratado para ${date} no endereço ${address}. Um profissional será contatado em breve.`);
+            
+            // Adiciona pontos ao cliente
+            userPoints += 50;
+            alert(`Você ganhou 50 pontos por contratar um serviço! Total: ${userPoints} pontos.`);
+            
+            hideModals();
+        }
+
+        function searchServices() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (!searchTerm) {
+                renderServices();
+                return;
+            }
+            
+            const filteredServices = services.filter(service => 
+                service.name.toLowerCase().includes(searchTerm) || 
+                service.description.toLowerCase().includes(searchTerm)
+            );
+            
+            servicesGrid.innerHTML = '';
+            
+            if (filteredServices.length === 0) {
+                servicesGrid.innerHTML = '<p class="no-results">Nenhum serviço encontrado. Tente outro termo.</p>';
+                return;
+            }
+            
+            filteredServices.forEach(service => {
+                const serviceCard = document.createElement('div');
+                serviceCard.className = 'service-card';
+                serviceCard.innerHTML = `
+                    <div class="service-icon">
+                        <i class="fas fa-${service.icon}"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>${service.name}</h3>
+                        <p>${service.description}</p>
+                        <div class="service-price">A partir de R$ ${service.price}</div>
+                        <div class="service-actions">
+                            <button class="btn btn-outline" style="color: var(--primary); border-color: var(--primary);">Detalhes</button>
+                            <button class="btn btn-primary hire-btn" data-id="${service.id}">Contratar</button>
+                        </div>
+                    </div>
+                `;
+                servicesGrid.appendChild(serviceCard);
+            });
+            
+            // Adiciona event listeners aos botões de contratação
+            document.querySelectorAll('.hire-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const serviceId = parseInt(e.target.dataset.id);
+                    selectedService = services.find(s => s.id === serviceId);
+                    
+                    if (!currentUser) {
+                        alert('Por favor, faça login para contratar um serviço.');
+                        showModal(loginModal);
+                        return;
                     }
-                }
-                
-                // Perguntou sobre materiais?
-                if (/(materiais|componentes|peças|itens)/.test(lowerInput)) {
-                    if (montagem.materiais) {
-                        return `<strong>Materiais para ${montagem.nome}:</strong><br>${montagem.materiais.join('<br>')}`;
-                    } else {
-                        return `Para a lista de materiais da ${montagem.nome}, consulte o manual do kit.`;
-                    }
-                }
-                
-                // Perguntou sobre dicas?
-                if (/(dica|dicas|sugest[ãa]o|recomenda[çc][ãa]o)/.test(lowerInput)) {
-                    if (montagem.dicas) {
-                        return `<strong>Dicas para ${montagem.nome}:</strong><br>${montagem.dicas.join('<br>')}`;
-                    } else {
-                        return `Dicas gerais para montagem: ${knowledgeBase.dicas.slice(0, 3).join('<br>')}`;
-                    }
-                }
-                
-                // Resposta padrão sobre a montagem
-                let response = `<strong>${montagem.nome}</strong> (Dificuldade: ${montagem.dificuldade}, Duração: ${montagem.duracao}):<br>`;
-                response += "<strong>Passos:</strong><br>" + montagem.passos.join('<br>');
-                
-                if (montagem.dicas) {
-                    response += "<br><br><strong>Dicas importantes:</strong><br>";
-                    response += montagem.dicas.slice(0, 3).join('<br>');
-                }
-                
-                return response;
-            }
-            
-            // 4. Perguntar por passos
-            if (/(passo|etapa)\s*(\d+)/.test(lowerInput)) {
-                return "Por favor, especifique de qual montagem você está falando. Ex: 'Passo 2 do Robô Explorador'";
-            }
-            
-            // 5. Problemas técnicos
-            if (/(problema|erro|ajuda|não funciona|não liga|dificuldade|dúvida)/.test(lowerInput)) {
-                return "<strong>Soluções para problemas técnicos:</strong><br>" + 
-                       knowledgeBase.suporte.slice(0, 4).join('<br>');
-            }
-            
-            // 6. Curiosidades
-            if (/(curiosidade|interessante|sabia|história|fato)/.test(lowerInput)) {
-                const randomCurio = knowledgeBase.curiosidades[
-                    Math.floor(Math.random() * knowledgeBase.curiosidades.length)
-                ];
-                return "<strong>Curiosidade robótica:</strong> " + randomCurio;
-            }
-            
-            // 7. Dicas gerais
-            if (/(dica|dicas|sugest[ãa]o|recomenda[çc][ãa]o|conselho)/.test(lowerInput)) {
-                return "<strong>Dicas gerais de montagem:</strong><br>" + 
-                       knowledgeBase.dicas.join('<br>');
-            }
-            
-            // 8. Agradecimento
-            if (/(obrigado|agradeço|valeu|grato|obrigada)/.test(lowerInput)) {
-                return "De nada! Estou à disposição para mais informações sobre suas montagens de robótica.";
-            }
-            
-            // 9. Limites do sistema
-            if (/(o que você sabe|o que faz|capacidades|limites)/.test(lowerInput)) {
-                return "<strong>Meus conhecimentos:</strong><br>" +
-                       "- 5 montagens de robótica específicas<br>" +
-                       "- Passo a passo detalhado de cada montagem<br>" +
-                       "- Solução de problemas técnicos<br>" +
-                       "- Curiosidades sobre robótica<br>" +
-                       "- Dicas de montagem<br><br>" +
-                       "<span class='warning'>Não sei responder sobre outros assuntos além de robótica e montagens</span>";
-            }
-            
-            // Resposta padrão para fora do escopo
-            return "Desculpe, minha especialidade é montagem de kits de robótica. " + 
-                   "Posso te ajudar com:<br>" +
-                   "- Explicar passo a passo de 5 montagens específicas<br>" +
-                   "- Solucionar problemas técnicos<br>" +
-                   "- Responder curiosidades sobre robótica<br>" +
-                   "- Dar dicas de montagem<br><br>" +
-                   "Tente perguntar sobre 'Robô Explorador' ou 'montagem1' para começar.";
+                    
+                    document.getElementById('hireModalTitle').textContent = `Contratar ${selectedService.name}`;
+                    showModal(hireModal);
+                });
+            });
         }
 
         // Event Listeners
-        sendButton.addEventListener('click', () => {
-            const message = userInput.value.trim();
-            if (message) {
-                addMessage(message, true);
-                userInput.value = '';
-                processUserInput(message);
+        loginBtn.addEventListener('click', () => showModal(loginModal));
+        registerBtn.addEventListener('click', () => showModal(registerModal));
+        searchBtn.addEventListener('click', searchServices);
+        
+        closeModals.forEach(btn => {
+            btn.addEventListener('click', hideModals);
+        });
+        
+        doLogin.addEventListener('click', login);
+        doRegister.addEventListener('click', register);
+        confirmHire.addEventListener('click', hireService);
+        
+        ctaSearch.addEventListener('click', () => {
+            document.getElementById('searchInput').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('searchInput').focus();
+        });
+        
+        ctaOffer.addEventListener('click', () => {
+            if (!currentUser) {
+                showModal(registerModal);
+                document.getElementById('userType').value = 'professional';
+            } else {
+                alert('Você já está cadastrado como profissional! Atualize seu perfil para oferecer serviços.');
             }
         });
 
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendButton.click();
-            }
+        // Seleção de método de pagamento
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+            });
         });
 
-        // Sugestões de perguntas
-        suggestionBox.addEventListener('click', (e) => {
-            if (e.target.classList.contains('suggestion')) {
-                const query = e.target.getAttribute('data-query');
-                userInput.value = query;
-                sendButton.click();
-            }
-        });
-
-        // Mensagem inicial
-        window.addEventListener('DOMContentLoaded', () => {
-            userInput.focus();
-        });
+        // Inicialização
+        renderServices();
     </script>
 </body>
 </html>
